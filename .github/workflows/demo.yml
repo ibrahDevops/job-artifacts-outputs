@@ -19,7 +19,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     outputs:
-      script-file: ${ steps.publish.ouputs.script-file }
+      script-file: ${{ steps.publish.ouputs.script-file }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -47,6 +47,6 @@ jobs:
       - name: output contents
         run: ls
       - name: Outputed filename from Build job
-        run: echo "${ needs.build.ouputs.script-file }"
+        run: echo "${{ needs.build.ouputs.script-file }}"
       - name: Deploy
         run: echo "Deploying artifact..."
