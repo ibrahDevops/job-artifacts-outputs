@@ -1,42 +1,23 @@
-+ rm -rf .settings1705402439527.xml
-11:55:17  [Pipeline] echo
-11:55:17  Using configuration from alm-one-pro profile
-11:55:17  [Pipeline] libraryResource
-11:55:17  [Pipeline] libraryResource
-11:55:19  [Pipeline] }
-11:55:19  [Pipeline] // dir
-11:55:19  [Pipeline] sh
-11:55:20  + git log -n 1 --pretty=format:%H
-11:55:20  [Pipeline] echo
-11:55:20  Generated traceability event of type: publication
-11:55:20  [Pipeline] echo
-11:55:20  Sending event...
-11:55:20  [Pipeline] echo
-11:55:20  Sending data to ElasticSearch
-11:55:20  [Pipeline] sh
-11:55:20  + git --no-pager show -s --format=%ae
-11:55:20  [Pipeline] sh
-11:55:21  + git --no-pager show -s --format=%an
-11:55:21  [Pipeline] echo
-11:55:21  user: 
-11:55:21  [Pipeline] echo
-11:55:21  getAliasElastic (default): almmc-pipelines-v2
-11:55:21  [Pipeline] echo
-11:55:21  getTypeElastic (default): _doc
-11:55:21  [Pipeline] echo
-11:55:21  getApiUrl (default): https://elastic.alm.europe.cloudcenter.corp
-11:55:21  [Pipeline] echo
-11:55:21  Using default credentialsId: alm-one-elasticsearch-apikey
-11:55:21  [Pipeline] echo
-11:55:21  ElasticSearch URL: https://elastic.alm.europe.cloudcenter.corp/almmc-pipelines-v2/_doc
-11:55:21  [Pipeline] echo
-11:55:21  Elasticsearch response status [201]
-11:55:21  [Pipeline] echo
-11:55:21  Exception: java.io.FileNotFoundException: https://nexus.alm.europe.cloudcenter.corp/repository/maven-public/de/santander/itos/gitops/dmp/loggingservice/logging-service-application/0.2.0-SNAPSHOT/maven-metadata.xml
-11:55:21  [Pipeline] }
-11:55:21  [Pipeline] // stage
-11:55:22  [Pipeline] }
-11:55:22  [Pipeline] // node
-11:55:22  [Pipeline] echo
-11:55:22  Error: java.io.FileNotFoundException: https://nexus.alm.europe.cloudcenter.corp/repository/maven-public/de/santander/itos/gitops/dmp/loggingservice/logging-service-application/0.2.0-SNAPSHOT/maven-metadata.xml
-11:55:22  [Pipeline] echo
+name: Check Node.js Versions
+
+on: [push, pull_request]
+
+jobs:
+  list-node-versions:
+    runs-on: self-hosted
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: List installed Node.js versions
+      run: |
+        echo "Checking for Node.js..."
+        if type node > /dev/null 2>&1; then
+            echo "Node.js is installed, version:"
+            node --version
+            echo "Listing globally installed Node.js versions (if managed by nvm or similar):"
+            nvm ls || true
+        else
+            echo "Node.js is not installed"
+        fi
